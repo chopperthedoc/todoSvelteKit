@@ -12,9 +12,7 @@ import { doc, getDoc } from "firebase/firestore";
 export const authStore = writable({
   user: null,
   loading: true,
-  data: {
-    todos: [],
-  },
+  data: {},
 });
 
 export const authHandlers = {

@@ -8,18 +8,8 @@
     let currTodo = ""
     let error = false
     
-    $: if ($authStore.data) {
-        todoList = $authStore.data.todos
-        console.log("todoList", $authStore.data)
-    }
-    authStore.subscribe((value) => {
-        console.log("authStore.subscribe", value)
-        if (value.data) {
-            console.log("value.data", value.data)
-            todoList = value.data.todos
-            
-        }
-    })
+    $: todoList = $authStore.data?.todos || [];
+    $: console.log('todoList hat sich geändert:', todoList);
 
     function addTodo() {
        

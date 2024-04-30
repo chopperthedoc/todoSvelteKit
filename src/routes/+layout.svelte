@@ -43,8 +43,10 @@
                 )
             } else {
                 const userData = docSnap.data();
-                console.log("userData", userData.data.todos)
-                dataToStore = userData
+                console.log("userData", userData.data)
+                dataToStore = {
+                    email: user.email,
+                    ...userData.data}
             }
 
             authStore.update((curr) => {
