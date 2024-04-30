@@ -2,7 +2,7 @@
   import { authHandlers, authStore } from "../../store/store";
   import {doc, getDoc, setDoc} from "firebase/firestore";
     import { db } from "../../lib/firebase/firebase";
-  import { onDestroy } from "svelte";
+import TodoItem from "../../components/TodoItem.svelte";
 
     let todoList = [];
     let currTodo = ""
@@ -75,19 +75,7 @@
         {#if todoList.length === 0}
         <p>Keine Todos vorhanden</p>
         {/if}
-        <div class="todo">
-            
-            <p>
-                {index+1}. {todo}
-            </p>            
-            <div class="actions">       
-                    <button on:click={() => editToDo(index)}>
-                        <i  class="fa-solid fa-pen"></i>
-                    </button>              
-                <button on:click={() => deleteToDo(index)}> <i class="fa-solid fa-trash"></i></button>              
-            </div>            
-        </div>
-
+        <TodoItem todo={todo} index={index} deleteToDo={deleteToDo} editToDo={editToDo}/>
         {/each}
     </main>
     <div class={"enterTodo" + (error ? " errorBorder" : "")}>
@@ -97,6 +85,9 @@
         </button>
     </div>
 </div>
+{:else}
+<p class="loading">Loading...</p>
+
 {/if}
 
 
@@ -179,10 +170,7 @@
         gap: 8px;
     }
 
-    .actions i:hover {
-        cursor: pointer;
-        color:#003c5b
-    }
+   
 
     .actions button {
         border: none
@@ -222,5 +210,11 @@
 
     .enterTodo button:hover {
         background: #002f47;
+    }
+
+    .loading {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
     }
 </style>
