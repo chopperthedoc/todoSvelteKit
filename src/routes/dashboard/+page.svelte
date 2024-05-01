@@ -1,18 +1,37 @@
 <script>
-  import { authHandlers, authStore } from "../../store/store";
-  import {doc, getDoc, setDoc} from "firebase/firestore";
+    import { authHandlers, authStore } from "../../store/store";
+    import {doc, getDoc, setDoc} from "firebase/firestore";
     import { db } from "../../lib/firebase/firebase";
-import TodoItem from "../../components/TodoItem.svelte";
+    import TodoItem from "../../components/TodoItem.svelte";
+    import {fetchWeather} from "../../lib/apiServices";
+    import {onMount} from "svelte";
 
     let todoList = [];
     let currTodo = ""
     let error = false
+    let weather = {}
     
     $: todoList = $authStore.data?.todos || [];
     $: console.log('todoList hat sich geändert:', todoList);
 
-    function addTodo() {
-       
+
+    onMount(async () => {
+        console.log("onMount dashboard")
+        try{
+        const weatherResponse = await fetchWeather();
+        
+        weather = weatherResponse.data;
+        console.log(weather.city.name)
+        } catch (e) {
+            console.error('Fehler beim Laden der API-Daten:', error);
+        }
+    })
+
+    function kelvinToCelsius(kelvin) {
+    return (kelvin - 273.15).toFixed(1);  // Konvertiert Kelvin in Celsius
+}
+
+    function addTodo() {    
         error = false
         if (!currTodo) {
             error = true
@@ -58,6 +77,13 @@ import TodoItem from "../../components/TodoItem.svelte";
 <div class="mainContainer">
     <div class="headerContainer">
         <h1>ToDo Liste</h1>
+        {#if weather && weather.list && weather.list.length > 0}
+        <div class="weatherInfo">
+            <p>Wetter in {weather.city.name}, {weather.city.country}:</p>
+            <p>{kelvinToCelsius(weather.list[0].main.temp)} °C, {weather.list[0].weather[0].description}</p>
+            <img src={`http://openweathermap.org/img/w/${weather.list[0].weather[0].icon}.png`} alt="Wettericon">
+        </div>
+        {/if}
         <div class="headerButtons">
             <button on:click={saveTodos}> 
                 <i class="fa-solid fa-floppy-disk"></i>
@@ -138,6 +164,29 @@ import TodoItem from "../../components/TodoItem.svelte";
         align-items: center;
         gap: 16px;
     }
+
+    .weatherInfo {
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.weatherInfo p {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.weatherIcon {
+    width: 50px;
+    height: 50px;
+    display: block;
+}
 
     main {
         display: flex;
