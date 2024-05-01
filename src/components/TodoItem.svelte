@@ -8,50 +8,45 @@
 
 
 
-        <div class="todo">
-            
-            <p>
-                {index+1}. {todo}
-            </p>            
-            <div class="actions">       
-                    <button on:click={() => editToDo(index)}>
-                        <i  class="fa-solid fa-pen"></i>
-                    </button>              
-                <button on:click={() => deleteToDo(index)}> <i class="fa-solid fa-trash"></i></button>              
-            </div>            
-        </div>
+<div class="todo">
+    
+    <p>
+        {index+1}. {todo}
+    </p>            
+    <div class="actions">       
+            <button on:click={() => editToDo(index)} >
+                <i  class="fa-solid fa-pen"></i>
+            </button>              
+        <button on:click={() => deleteToDo(index)}> 
+            <i class="fa-solid fa-trash"></i>
+        </button>              
+    </div>            
+</div>
 
 
-        <style>
-.todo {
-        padding: 8px 24px;
-        background: #f0f0f0;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+<style>
+    .todo {
+    padding: 8px 24px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     }
 
-    .todo input {
-        background: transparent;
-        border: none;
-        padding: 14px;
-        color: gray;
-        flex: 1;
-        border: 1px solid #003c5b;
-    }
+
     .actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     }
 
     .actions i:hover {
-        cursor: pointer;
-        color:#003c5b
+    cursor: pointer;
+    color:#003c5b
     }
 
     .actions button {
-        border: none
+    border: none
     }
-        </style>
+</style>
